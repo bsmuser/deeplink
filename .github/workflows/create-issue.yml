@@ -19,7 +19,7 @@ jobs:
 
       - name: Create GitHub Issue
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 使用 GitHub Secrets 中存储的 Token
+          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}  # 使用 GitHub Secrets 中存储的 Token
         run: |
           curl -X POST \
           -H "Authorization: token $GITHUB_TOKEN" \
