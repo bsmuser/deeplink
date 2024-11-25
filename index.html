@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信跳转</title>
+    <script>
+        function redirectToWeChat() {
+            // 检测是否安装微信
+            const wechatScheme = "weixin://";
+            const fallbackUrl = "https://apps.apple.com/cn/app/wechat/id414478124"; // 微信在 App Store 的下载页面
+            const start = Date.now();
+
+            // 创建隐藏的 iframe 尝试打开微信
+            const iframe = document.createElement("iframe");
+            iframe.style.display = "none";
+            iframe.src = wechatScheme;
+            document.body.appendChild(iframe);
+
+            // 检测是否跳转成功
+            setTimeout(() => {
+                const elapsed = Date.now() - start;
+                if (elapsed < 2000) {
+                    // 未安装微信，跳转到 App Store
+                    window.location.href = fallbackUrl;
+                }
+                document.body.removeChild(iframe);
+            }, 1500);
+        }
+    </script>
+</head>
+<body onload="redirectToWeChat()">
+    <p>正在尝试打开微信，如果失败，将跳转到下载页面...</p>
+</body>
+</html>
