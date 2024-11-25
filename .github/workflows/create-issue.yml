@@ -1,0 +1,31 @@
+name: Create GitHub Issue
+
+on:
+  workflow_dispatch:  # 允许手动触发此工作流
+    inputs:
+      source:
+        description: 'Source of the deep link'
+        required: true
+      campaign:
+        description: 'Campaign ID'
+        required: true
+
+jobs:
+  create_issue:
+    runs-on: ubuntu-latest  # 使用 GitHub 提供的 Ubuntu 运行环境
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # 检出代码（必要的步骤）
+
+      - name: Create GitHub Issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 使用 GitHub Secrets 中存储的 Token
+        run: |
+          curl -X POST \
+          -H "Authorization: token $GITHUB_TOKEN" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "title": "Source: ${{ github.event.inputs.source }}, Campaign: ${{ github.event.inputs.campaign }}",
+            "body": "Source: ${{ github.event.inputs.source }}\nCampaign: ${{ github.event.inputs.campaign }}"
+          }' \
+          https://api.github.com/repos/bsmuser/deeplink/issues
